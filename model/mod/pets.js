@@ -9,7 +9,7 @@ const petsSchema=new mongoose.Schema({
         type:String,
         enum:['公','母']
     },
-    age:Number,
+    age:String,
 })
 
 export let Pets=mongoose.model('Pets',petsSchema)
