@@ -18,8 +18,7 @@ class GoodsCheck{
                 return
             }
             else{                
-                let path=('/'+files.file.path.slice(22)).replace('\\','/').replace('\\','/')
-                res.send(path)
+                res.send(files.file.path.slice(41))
                 return 
             }
         })
@@ -84,14 +83,27 @@ class GoodsCheck{
     // 得到宠物科目
     static async getPets(req,res){
         // mongoose查询到的结果不是一个对象 需要通过toObject()方法转化成对象
-        const pets=await Goods.find({'selfType':'宠物'})
+        const subject=req.body.subject
         let data=[]
-        for(let i of pets){
-            const x=await Pets.findOne({'goodsId':i['_id']})
-            let m=i.toObject()
-            m['age']=x['age']
-            m['sex']=x['sex']
-            data.push(m)
+        if(subject==undefined||subject==='全部种类'){
+            const pets=await Goods.find({'selfType':'宠物'})
+            for(let i of pets){
+                const x=await Pets.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['age']=x['age']
+                m['sex']=x['sex']
+                data.push(m)
+            }
+        }
+        else {
+            const pets=await Goods.find({'subject':subject})
+            for(let i of pets){
+                const x=await Pets.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['age']=x['age']
+                m['sex']=x['sex']
+                data.push(m)
+            }
         }
         res.send(data)
     }
