@@ -107,6 +107,77 @@ class GoodsCheck{
         }
         res.send(data)
     }
+    // 得到宠物用品数据
+    static async getPetsGoods(req,res){
+        const subject=req.body.subject
+        let data=[]
+        if(subject==undefined||subject=='全部'){
+            const petsGoods=await Goods.find({"selfType":'宠物用品'})
+            for(let i of petsGoods){
+                const x=await PetsGoods.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['notice']=x['notice']
+                data.push(m)
+            }
+        }else{
+            const petsGoods=await Goods.find({'subject':subject})
+            for(let i of petsGoods){
+                const x=await PetsGoods.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['notice']=x['notice']
+                data.push(m)
+            }
+        }
+        res.send(data)
+    }
+    // 得到周边数据
+    static async getSouvenir(req,res){
+        const subject=req.body.subject
+        let data=[]
+        if(subject==undefined||subject=='全部'){
+            const souvenir=await Goods.find({"selfType":'周边'})
+            for(let i of souvenir){
+                const x=await Souvenir.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['material']=x['material']
+                data.push(m)
+            }
+        }else{
+            const souvenir=await Goods.find({'subject':subject})
+            for(let i of souvenir){
+                const x=await Souvenir.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['material']=x['material']
+                data.push(m)
+            }
+        }
+        res.send(data)
+    }
+    // 得到所有的商品
+    static async getAllGoods(req,res){
+        const goods=await Goods.find()
+        let data=[]
+        for(let i of goods){
+            if(i.selfType=='宠物'){
+                const x=await Pets.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['age']=x['age']
+                m['sex']=x['sex']
+                data.push(m)
+            }else if(i.selfType=='宠物用品'){
+                const x=await PetsGoods.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['notice']=x['notice']
+                data.push(m)
+            }else{
+                const x=await Souvenir.findOne({'goodsId':i['_id']})
+                let m=i.toObject()
+                m['material']=x['material']
+                data.push(m)
+            }
+        }
+        res.send(data)
+    }
 }
 
 export {GoodsCheck}

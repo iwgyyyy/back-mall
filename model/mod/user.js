@@ -15,7 +15,7 @@ const userSchema=new Schema({
         required:true
     },
     //昵称
-    nikename:String,
+    nickname:String,
     email:{
         type:String,
         match:/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,

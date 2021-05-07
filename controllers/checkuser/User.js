@@ -51,6 +51,65 @@ class UserCheck{
             return 
         }
     }
+    // 查询用户信息
+    static async getPersonalMessage(req,res){
+        await User.findOne(req.body,(err,doc)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(doc)
+                return 
+            }
+        })
+    }
+    //修改用户信息
+    static async keepPersonalMessage(req,res){
+        await User.findOneAndUpdate({account:req.body.account},{
+            email:req.body.email,
+            phonenumber:req.body.phonenumber,
+            sex:req.body.sex,
+            nickname:req.body.nickname,
+            realname:req.body.realname
+        },err=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.sendStatus(200)
+                return 
+            }
+        })
+    }
+    // 得到用户密码
+    static async getPassword(req,res){
+        await User.findOne(req.body,(err,doc)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(doc.password)
+                return 
+            }
+        })
+    }
+    // 修改密码
+    static async changePassword(req,res){
+        const {account,password}=req.body
+        await User.findOneAndUpdate({account},{password},err=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.sendStatus(200)
+                return 
+            }
+        })
+    }
     
 }
 
