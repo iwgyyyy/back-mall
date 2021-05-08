@@ -106,6 +106,7 @@ class GoodsCheck{
             }
         }
         res.send(data)
+        return 
     }
     // 得到宠物用品数据
     static async getPetsGoods(req,res){
@@ -129,6 +130,7 @@ class GoodsCheck{
             }
         }
         res.send(data)
+        return 
     }
     // 得到周边数据
     static async getSouvenir(req,res){
@@ -152,6 +154,7 @@ class GoodsCheck{
             }
         }
         res.send(data)
+        return 
     }
     // 得到所有的商品
     static async getAllGoods(req,res){
@@ -177,6 +180,51 @@ class GoodsCheck{
             }
         }
         res.send(data)
+        return 
+    }
+    // 通过id得到该商品
+    static async getOneGoods(req,res){
+        const goods=(await Goods.findById(req.body.id)).toObject()
+        if(goods.selfType=='宠物'){
+            const x=await Pets.findOne({goodsId:goods['_id']})
+            goods['age']=x['age']
+            goods['sex']=x['sex']
+        }else if(goods.selfType=='宠物用品'){
+            const x=await PetsGoods.findOne({goodsId:goods['_id']})
+            goods['notice']=x['notice']
+        }else{
+            const x=await Souvenir.findOne({goodsId:goods['_id']})
+            goods['material']=x['material']
+        }
+        res.send(goods)
+        return 
+    }
+    // 检查商品的库存数量
+    static async checkStock(req,res){
+        const id_list=req.body
+        let flag=false
+        for(let i in id_list){
+            if(flag) break
+            const{id,numbers}=id_list[i]
+            await Goods.findById(id,(err,doc)=>{
+                if(err){
+                    console.log(err);
+                    flag=true
+                    res.sendStatus(500)
+                    return 
+                }else{
+                    if(doc.stock<numbers){
+                        flag=true
+                        res.send(`${doc.selfClass}库存数量不足`)
+                        return 
+                    }
+                }
+            })
+        }
+        if(!flag){
+            res.send('库存足够')
+            return
+        }
     }
 }
 

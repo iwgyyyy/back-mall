@@ -2,8 +2,8 @@ import {User} from '../../model/mod_api.js'
 
 class UserCheck{
     // 保存账户
-    static saveAccount(req,res){
-        new User({
+    static async saveAccount(req,res){
+        await new User({
             account:req.body.account,
             password:req.body.password,
             phonenumber:req.body.phonenumber

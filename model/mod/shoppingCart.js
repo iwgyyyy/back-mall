@@ -2,15 +2,23 @@ import mongoose from 'mongoose'
 
 const shoppingCartSchema=new mongoose.Schema({
     goodsId:{
-        type:mongoose.ObjectId,
+        type:String,
+        required:true
+    },
+    name:{
+        type:String,
         required:true
     },
     userAccount:{
         type:String,
         required:true
     },
+    showPictureAddress:{
+        type:String,
+        required:true
+    },
     createTime:{
-        type:Date,
+        type:String,
         default:new Date().toLocaleString()
     },
     price:{
