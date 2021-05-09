@@ -13,7 +13,7 @@ const orderSchema=new mongoose.Schema({
     },
     // 收货人信息
     receiveMessage:{
-        type:Array,
+        type:Object,
     },
     status:{
         type:Number,

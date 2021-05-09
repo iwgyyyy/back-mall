@@ -32,6 +32,13 @@ router
     .post('/changeNumbers',ShoppingCartCheck.changeNumbers)
     .post('/deleteManyShoppingCart',ShoppingCartCheck.deleteManyGoods)
     .post('/generateOrder',OrderCheck.generateOrder)
+    .post('/generateOneGoodsOrder',OrderCheck.generateOneGoodsOrder)
     .post('/getWaitForPaidOrder',OrderCheck.getWaitForPaidOrder)
-
+    .post('/deleteWaitForPaidOrder',OrderCheck.deleteWaitForPaidOrder)
+    .post('/keepOrderAddress',OrderCheck.keepOrderAddress)
+    .post('/changeOrderToWaitForDeliver',OrderCheck.changeOrderToWaitForDeliver)
+    .post('/changeToHistoryOrder',OrderCheck.changeToHistoryOrder)
+    .post('/getWaitForDeliver',OrderCheck.getWaitForDeliver)
+    .post('/getHistoryOrder',OrderCheck.getHistoryOrder)
+    .post('/deleteCustomerHistoryOrder',OrderCheck.deleteCustomerHistoryOrder)
 export {router}
