@@ -1,6 +1,7 @@
 import {Goods,Pets,PetsGoods,Souvenir} from '../../model/mod_api.js'
 import formidable from 'formidable'
 import {v4 as uuidv4} from 'uuid'
+import fs from 'fs'
 
 
 class GoodsCheck{
@@ -225,6 +226,85 @@ class GoodsCheck{
             res.send('库存足够')
             return
         }
+    }
+    // 后台得到所有的宠物商品
+    static async getAllBackPets(req,res){
+        await Goods.find({selfType:'宠物'},(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台得到所有的宠物用品数据
+    static async getAllBackPetsGoods(req,res){
+        await Goods.find({selfType:'宠物用品'},(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台得到所有的周边数据
+    static async getAllBackSouvenir(req,res){
+        await Goods.find({selfType:'周边'},(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台删除商品
+    static async deleteGoods(req,res){
+        const id =req.body.id
+        await Goods.findByIdAndDelete(id,(err,doc)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                // 顺带删除图片 不可取
+                // let images=doc.detailPictureAddress
+                // images.push(doc.showPictureAddress)
+                // for(let i in images){
+                //     const path="D:/Project/thpetsmall/public/goodsImages/"+images[i]
+                //     fs.rmSync(path)
+                // }
+                res.sendStatus(200)
+                return 
+            }
+        })
+    }
+    // 后台修改商品数据
+    static async changeGoodsMessage(req,res){
+        const {id,name,decscription,price,stock}=req.body
+        await Goods.findByIdAndUpdate(id,{
+            name,
+            decscription,
+            price,
+            stock
+        },err=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.sendStatus(200)
+                return 
+            }
+        })
     }
 }
 

@@ -4,9 +4,10 @@ import {GoodsCheck} from '../controllers/goods/Goods.js'
 import {AddressCheck} from '../controllers/address/Address.js'
 import { ShoppingCartCheck } from '../controllers/shoppingCart/shoppingCart.js'
 import { OrderCheck } from '../controllers/order/order.js'
+import { AdminCheck } from '../controllers/admin/admin.js'
 let router=express.Router()//express的方法 不是express()的方法
 
-// 监听注册事件
+// 监听事件
 router
     .post('/register',UserCheck.register)
     .post('/login',UserCheck.login)
@@ -41,4 +42,17 @@ router
     .post('/getWaitForDeliver',OrderCheck.getWaitForDeliver)
     .post('/getHistoryOrder',OrderCheck.getHistoryOrder)
     .post('/deleteCustomerHistoryOrder',OrderCheck.deleteCustomerHistoryOrder)
+    .post('/getAllWaitForPaidOrder',OrderCheck.getAllWaitForPaidOrder)
+    .post('/getAllWaitForDeliverOrder',OrderCheck.getAllWaitForDeliverOrder)
+    .post('/getAllWaitForReceiveOrder',OrderCheck.getAllWaitForReceiveOrder)
+    .post('/getAllHistoryOrder',OrderCheck.getAllHistoryOrder)
+    .post('/changeToWaitForReceive',OrderCheck.changeToWaitForReceive)
+    .post('/deleteHistoryOrder',OrderCheck.deleteHistoryOrder)
+    .post('/getAllBackPets',GoodsCheck.getAllBackPets)
+    .post('/getAllBackPetsGoods',GoodsCheck.getAllBackPetsGoods)
+    .post('/getAllBackSouvenir',GoodsCheck.getAllBackSouvenir)
+    .post('/deleteGoods',GoodsCheck.deleteGoods)
+    .post('/changeGoodsMessage',GoodsCheck.changeGoodsMessage)
+    .post('/adminLoginIn',AdminCheck.login)
+    .post('/changeAdminPassword',AdminCheck.changePassword)
 export {router}

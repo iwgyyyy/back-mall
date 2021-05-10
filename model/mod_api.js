@@ -6,6 +6,7 @@ import {Goods} from './mod/goods.js'
 import {Order} from './mod/order.js'
 import {ShoppingCart} from './mod/shoppingCart.js'
 import {Address} from './mod/address.js'
+import {Admin} from './mod/admin.js'
 
 export {
     User,
@@ -15,5 +16,6 @@ export {
     Goods,
     Order,
     ShoppingCart,
-    Address
+    Address,
+    Admin
 }

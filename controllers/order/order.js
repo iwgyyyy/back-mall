@@ -1,4 +1,3 @@
-import e from 'express'
 import {Goods, Order} from '../../model/mod_api.js'
 
 class OrderCheck{
@@ -57,7 +56,7 @@ class OrderCheck{
 
 
     }
-    // 请求待支付订单
+    // 请求待支付订单 --客户
     static async getWaitForPaidOrder(req,res){
         await Order.find({
             userAccount:req.body.account,
@@ -131,7 +130,7 @@ class OrderCheck{
             }
         })
     }
-    // 请求待发货的订单
+    // 请求待发货的订单 --客户
     static async getWaitForDeliver(req,res){
         await Order.find({
             userAccount:req.body.account,
@@ -168,10 +167,118 @@ class OrderCheck{
     static async deleteCustomerHistoryOrder(req,res){
         const order=(await Order.findById(req.body.id)).toObject()
         if(order.statusForBusiness==1){
-            await Order.findByIdAndDelete(req.body.id)
+            await Order.findByIdAndDelete(req.body.id,err=>{
+                if(err){
+                    console.log(err);
+                    res.sendStatus(500)
+                    return 
+                }else{
+                    res.sendStatus(200)
+                    return 
+                }
+            })
         }else{
             await Order.findByIdAndUpdate(req.body.id,{
                 statusForCustomer:1
+            },err=>{
+                if(err){
+                    console.log(err);
+                    res.sendStatus(500)
+                    return 
+                }else{
+                    res.sendStatus(200)
+                    return 
+                }
+            })
+        }
+    }
+    // 后台请求所有待支付订单
+    static async getAllWaitForPaidOrder(req,res){
+        await Order.find({status:0},(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台请求所有的待发货订单
+    static async getAllWaitForDeliverOrder(req,res){
+        await Order.find({status:1},(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台请求所有待收货的订单
+    static async getAllWaitForReceiveOrder(req,res){
+        await Order.find({status:2},(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台请求所有历史订单
+    static async getAllHistoryOrder(req,res){
+        await Order.find({
+            status:3,
+            statusForBusiness:0
+        },(err,docs)=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.send(docs)
+                return 
+            }
+        })
+    }
+    // 后台发货按钮的请求
+    static async changeToWaitForReceive(req,res){
+        await Order.findByIdAndUpdate(req.body.id,{
+            status:2
+        },err=>{
+            if(err){
+                console.log(err);
+                res.sendStatus(500)
+                return 
+            }else{
+                res.sendStatus(200)
+                return 
+            }
+        })
+    }
+    // 后台删除历史订单
+    static async deleteHistoryOrder(req,res){
+        const order=(await Order.findById(req.body.id)).toObject()
+        if(order.statusForCustomer==1){
+            await Order.findByIdAndDelete(req.body.id,err=>{
+                if(err){
+                    console.log(err);
+                    res.sendStatus(500)
+                    return 
+                }else{
+                    res.sendStatus(200)
+                    return 
+                }
+            })
+        }else{
+            await Order.findByIdAndUpdate(req.body.id,{
+                statusForBusiness:1
             },err=>{
                 if(err){
                     console.log(err);
